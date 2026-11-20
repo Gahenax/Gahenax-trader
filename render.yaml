@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: gahenax-trader-testnet
+    runtime: python
+    plan: free
+    buildCommand: python -m compileall -q scripts
+    startCommand: python scripts/health_server.py
+    healthCheckPath: /health
+    autoDeployTrigger: off
