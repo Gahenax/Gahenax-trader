@@ -3,14 +3,16 @@
 import json
 import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlsplit
 
 class Handler(BaseHTTPRequestHandler):
     def _respond(self, body=True):
-        if self.path not in ('/', '/health'):
+        path = urlsplit(self.path).path
+        if path not in ('/', '/health'):
             self.send_error(404)
             return
         payload = {'service': 'gahenax-trader-testnet', 'mode': 'READ_ONLY', 'orders_enabled': False}
-        if self.path == '/':
+        if path == '/':
             payload['message'] = 'GAHENAX diagnostic service; no trading interface enabled'
         data = json.dumps(payload).encode('utf-8')
         self.send_response(200)
